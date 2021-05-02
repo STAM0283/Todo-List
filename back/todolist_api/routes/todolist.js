@@ -38,4 +38,21 @@ router.post('/alltodo', (req, res) => {
     console.log('erreur');
   }
 });
+router.delete('/alltodo', (req, res) => {
+  const { id } = req.body;
+  try {
+    connexion.query('DELETE FROM allTodo WHERE id = ?', [id], (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send({
+          status: 200,
+          message: 'Todo was deleted',
+        });
+      }
+    });
+  } catch {
+    console.log('erreur');
+  }
+});
 module.exports = router;
