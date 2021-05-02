@@ -18,10 +18,9 @@ router.get('/alltodo', (req, res) => {
 });
 router.post('/alltodo', (req, res) => {
   const { name } = req.body;
-  const { categoty } = req.body;
   const { date } = req.body;
   try {
-    connexion.query('INSERT INTO allTodo (name, categoty, date) VALUES (?, ?, ?)', [name, categoty, date], (err, result) => {
+    connexion.query('INSERT INTO allTodo (name, date) VALUES (?, ?)', [name, date], (err, result) => {
       if (err) {
         console.log(err);
       } else {
