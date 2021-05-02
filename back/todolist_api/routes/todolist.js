@@ -9,10 +9,7 @@ router.get('/alltodo', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        res.send({
-          message: 200,
-          result,
-        });
+        res.send(result);
       }
     });
   } catch {
@@ -39,7 +36,7 @@ router.post('/alltodo', (req, res) => {
   }
 });
 router.delete('/alltodo', (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
   try {
     connexion.query('DELETE FROM allTodo WHERE id = ?', [id], (err) => {
       if (err) {
