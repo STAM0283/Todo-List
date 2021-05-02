@@ -6,7 +6,6 @@ function App() {
   const [id, setId] = useState('');
   const [todo, setTodo] = useState(null);
   const [name, setTName] = useState('');
-  const [categoty, setCategory] = useState('');
   const [date, setDate] = useState('');
   useEffect(() => {
     axios.get('http://localhost:5000/alltodo').then((response) => {
@@ -20,9 +19,6 @@ function App() {
   const handleName = (event) => {
     setTName(event.target.value);
   };
-  const handleCategory = (event) => {
-    setCategory(event.target.value);
-  };
   const handleDate = (event) => {
     setDate(event.target.value);
   };
@@ -30,14 +26,13 @@ function App() {
     event.preventDefault();
     const data = {
       name,
-      categoty,
       date,
     };
     console.log(data);
     axios.post('http://localhost:5000/alltodo', data).then(() => {
       setTName('');
-      setCategory('');
       setDate('');
+      document.location.reload();
     });
   };
   const handleId = (event) => {
@@ -47,7 +42,7 @@ function App() {
     event.preventDefault();
     const todoId = parseInt(id, 10);
     axios.delete(`http://localhost:5000/alltodo?id=${todoId}`).then(() => {
-
+      document.location.reload();
     }).catch((err) => {
       throw err;
     });
@@ -64,28 +59,20 @@ function App() {
                 <div className="id" style={{ width: '5px' }}>{item.id}</div>
                 <input type="checkbox" />
                 <div style={{ width: '50px' }}>{item.categoty}</div>
-                <div style={{ width: '200px' }}>{item.name}</div>
+                <div style={{ width: '300px' }}>{item.name}</div>
                 <div style={{ width: '50px' }}>{item.date}</div>
                 <button type="submit" value={item.id} onClick={handleId}>Delete</button>
               </form>
             ))
           }
+          <form className="addTodo" onSubmit={formSubmit}>
+            <div className="inputInfos">
+              <input type="text" value={name} onChange={handleName} id="inputName" placeholder="Ajouter un todo à la liste" />
+              <input type="text" value={date} onChange={handleDate} id="inputDate" placeholder="Precisez la date" />
+              <button type="submit">Ajouter</button>
+            </div>
+          </form>
         </div>
-        <form className="addTodo" onSubmit={formSubmit}>
-          <div className="radioTodo">
-            <label htmlFor="radio1">Administration</label>
-            <input type="radio" value="Administration" onChange={handleCategory} name="category" id="radio1" />
-            <label htmlFor="radio2">Famille</label>
-            <input type="radio" value="Famille" onChange={handleCategory} name="category" id="radio2" />
-            <label htmlFor="radio3">Achat</label>
-            <input type="radio" value="Achat" onChange={handleCategory} name="category" id="radio3" />
-          </div>
-          <div className="inputInfos">
-            <input type="text" value={name} onChange={handleName} id="inputName" />
-            <input type="text" value={date} onChange={handleDate} id="inputDate" />
-          </div>
-          <button type="submit">Ajouter</button>
-        </form>
       </div>
     </div>
   ) : (
